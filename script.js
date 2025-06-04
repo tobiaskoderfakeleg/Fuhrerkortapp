@@ -147,37 +147,15 @@ function startHologram() {
 
   // Hologram-tilt
 function handleOrientationMain(e) {
-  const x = e.beta;   // -180 … 180 (front/back)
-  const y = e.gamma;  // -90 … 90 (left/right)
+  const y = e.gamma; // -90 … 90 (left/right)
   const holo = document.getElementById('holo-main');
 
-  // 1) Keep the existing 3D tilt effect:
-  holo.style.transform = `translate(-50%, -50%) rotateX(${x / 2}deg) rotateY(${y / 2}deg)`;
-
-  // 2) Now check thresholds to pick a “hologram color”:
-  //    - tilt backward  (phone top leans away from you) → beta > 30
-  //    - tilt forward   (phone top leans toward you)  → beta < -30
-  //    - tilt right     (phone right side down)       → gamma > 30
-  //    - tilt left      (phone left side down)        → gamma < -30
-  //
-  //  Feel free to adjust 30° to any sensitivity you like.
-
-  if (x > 30) {
-    // leaning backward
-    holo.style.backgroundColor = 'green';
-  } else if (x < -30) {
-    // leaning forward
-    holo.style.backgroundColor = 'red';
-  } else if (y > 30) {
-    // tilted to the right
-    holo.style.backgroundColor = 'blue';
-  } else if (y < -30) {
-    // tilted to the left
-    holo.style.backgroundColor = 'purple';
-  } else {
-    // nearly flat—use default “blue‐ish” circle
-    holo.style.backgroundColor = 'rgba(0, 122, 255, 0.5)';
+  // Opacity ranges from 0.5 (flat) to 0.9 at ~35° right tilt
+  let opacity = 0.5;
+  if (y > 0) {
+    opacity = Math.min(0.5 + (y / 35) * 0.4, 0.9);
   }
+  holo.style.backgroundColor = `rgba(0, 0, 0, ${opacity})`;
 }
 
 function handleOrientationLicense(e) {
@@ -224,8 +202,8 @@ function handleOrientationLicense(e) {
 
   // 9) Reset transforms when screens switch
   function resetTransforms() {
-    document.getElementById('holo-main').style.transform =
-      'translate(-50%, -50%) rotateX(0deg) rotateY(0deg)';
+    const m = document.getElementById('holo-main');
+    m.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
     const l = document.getElementById('holo-license');
     if (l) {
       l.style.transform = 'translate(-50%, -50%) rotateX(0deg) rotateY(0deg)';
