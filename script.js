@@ -95,6 +95,9 @@ function startHologram() {
     updateTimestamp();
     // When you leave mainScreen → licenseScreen, remove main hologram:
     window.removeEventListener('deviceorientation', handleOrientationMain);
+    if (hasHoloPermission()) {
+      window.addEventListener('deviceorientation', handleOrientationLicense);
+    }
   });
   document.getElementById('btn-bottom').addEventListener('click', () => {
     alert('Skann QR-kode funksjon ikke implementert');
@@ -108,6 +111,7 @@ function startHologram() {
   document.getElementById('back-from-license').addEventListener('click', () => {
     licenseScreen.classList.remove('active');
     mainScreen.classList.add('active');
+    window.removeEventListener('deviceorientation', handleOrientationLicense);
     // If holo was already granted, re‐attach main listener
     if (hasHoloPermission()) {
       window.addEventListener('deviceorientation', handleOrientationMain);
@@ -119,6 +123,7 @@ function startHologram() {
   document.getElementById('control-btn').addEventListener('click', () => {
     licenseScreen.classList.remove('active');
     screen2.classList.add('active');
+    window.removeEventListener('deviceorientation', handleOrientationLicense);
     // When entering screen2, attach the second hologram listener if permission granted
     if (hasHoloPermission()) {
       window.addEventListener('deviceorientation', handleOrientation2);
@@ -131,6 +136,9 @@ function startHologram() {
     licenseScreen.classList.add('active');
     // Remove screen2 listener so it stops firing:
     window.removeEventListener('deviceorientation', handleOrientation2);
+    if (hasHoloPermission()) {
+      window.addEventListener('deviceorientation', handleOrientationLicense);
+    }
   });
   document.getElementById('clickable-image').addEventListener('click', () => {
     screen2.classList.remove('active');
@@ -224,6 +232,26 @@ function handleOrientation2(e) {
   }
 }
 
+function handleOrientationLicense(e) {
+  const x = e.beta;
+  const y = e.gamma;
+  const holo = document.getElementById('holo-license');
+
+  holo.style.transform = `translate(-50%, -50%) rotateX(${x / 2}deg) rotateY(${y / 2}deg)`;
+
+  if (x > 30) {
+    holo.style.backgroundColor = 'green';
+  } else if (x < -30) {
+    holo.style.backgroundColor = 'red';
+  } else if (y > 30) {
+    holo.style.backgroundColor = 'blue';
+  } else if (y < -30) {
+    holo.style.backgroundColor = 'purple';
+  } else {
+    holo.style.backgroundColor = 'rgba(0, 122, 255, 0.5)';
+  }
+}
+
   // Update the "Sist oppdatert" timestamp on the license screen
   function updateTimestamp() {
     const el = document.getElementById('updated-time');
@@ -246,6 +274,10 @@ function handleOrientation2(e) {
       'translate(-50%, -50%) rotateX(0deg) rotateY(0deg)';
     document.getElementById('holo-2').style.transform =
       'translate(-50%, -50%) rotateX(0deg) rotateY(0deg)';
+    const l = document.getElementById('holo-license');
+    if (l) {
+      l.style.transform = 'translate(-50%, -50%) rotateX(0deg) rotateY(0deg)';
+    }
   }
   const observer = new MutationObserver(mutations => {
     for (const m of mutations) {
@@ -254,4 +286,5 @@ function handleOrientation2(e) {
   });
   observer.observe(mainScreen, { attributes: true });
   observer.observe(screen2, { attributes: true });
+  observer.observe(licenseScreen, { attributes: true });
 });
