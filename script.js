@@ -145,7 +145,6 @@ function startHologram() {
     screen2.classList.add('active');
   });
 
-  // Hologram-tilt
 function handleOrientationMain(e) {
   const y = e.gamma; // -90 … 90 (left/right)
   const holo = document.getElementById('holo-main');
@@ -199,7 +198,7 @@ function handleOrientationLicense(e) {
     const n = Math.floor(Math.random() * (998 - 101 + 1)) + 101;
     dailyNumberEl.textContent = n;
   }
-
+  
   // 9) Reset transforms when screens switch
   function resetTransforms() {
     const m = document.getElementById('holo-main');
