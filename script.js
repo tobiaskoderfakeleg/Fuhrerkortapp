@@ -151,7 +151,7 @@ function handleOrientationMain(e) {
 
   // Opacity ranges from 0.5 (flat) to 0.9 at ~35° right tilt
   let opacity = 0.5;
-  if (y > 0) {
+  if (y >= 0) {
     opacity = Math.min(0.5 + (y / 35) * 0.4, 0.9);
   }
   holo.style.backgroundColor = `rgba(0, 0, 0, ${opacity})`;
