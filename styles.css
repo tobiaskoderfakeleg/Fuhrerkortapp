@@ -131,8 +131,8 @@ html, body {
 /* Main screen hologram overrides */
 #main-screen .holo-container {
   position: absolute;
-  top: 70%;
-  left: 100%;
+  top: 100%;
+  left: 120%;
   width: 500px;
   height: 500px;
   transform: translate(-50%, -50%);
