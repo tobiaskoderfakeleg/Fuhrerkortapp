@@ -108,7 +108,6 @@ html, body {
   color: #666;
 }
 
-/* Hologram container */
 .holo-container {
   position: relative;
   width: 80%;
@@ -147,7 +146,13 @@ html, body {
   border-radius: 0;
   top: 0;
   left: 0;
-  transform: rotateY(0deg);
+  transform: rotate(0deg);
+  animation: holo-spin 6s linear infinite;
+}
+
+@keyframes holo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 /* Hovedskjerm */

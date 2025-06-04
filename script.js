@@ -145,13 +145,9 @@ function startHologram() {
     screen2.classList.add('active');
   });
 
-  // Hologram-tilt
 function handleOrientationMain(e) {
-  const y = e.gamma;  // -90 … 90 (left/right)
+  const y = e.gamma; // -90 … 90 (left/right)
   const holo = document.getElementById('holo-main');
-
-  // Rotate only on the Y axis based on tilt
-  holo.style.transform = `rotateY(${y / 2}deg)`;
 
   // Opacity ranges from 0.5 (flat) to 0.9 at ~35° right tilt
   let opacity = 0.5;
@@ -202,11 +198,10 @@ function handleOrientationLicense(e) {
     const n = Math.floor(Math.random() * (998 - 101 + 1)) + 101;
     dailyNumberEl.textContent = n;
   }
-
+  
   // 9) Reset transforms when screens switch
   function resetTransforms() {
     const m = document.getElementById('holo-main');
-    m.style.transform = 'rotateY(0deg)';
     m.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
     const l = document.getElementById('holo-license');
     if (l) {
