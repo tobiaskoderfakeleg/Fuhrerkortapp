@@ -298,68 +298,50 @@ html, body {
   z-index: 2;
 }
 
-/* Skjerm 4: Side med bilde og tekstbokser */
-#screen2 .back-btn {
-  display: block;
-}
-#screen2 .logo {
-  margin-top: 60px;
+/* Skjerm 4: Kontrollside */
+#screen2 .top-bar {
+  position: relative;
   text-align: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #ccc;
 }
-#screen2 .logo img {
-  width: 80px;
-  height: auto;
-  margin-bottom: 10px;
-}
-#screen2 .logo h1 {
+#screen2 .bar-title {
   font-size: 1rem;
-  color: #333;
+  font-weight: bold;
 }
-#screen2 .content {
-  margin-top: 20px;
-  width: 100%;
-  flex: 1;
+#screen2 .top-bar .back-btn {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+#screen2 .kontroll-content {
+  margin-top: 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-#screen2 img {
-  width: 70%;
-  border-radius: 8px;
-  margin-bottom: 15px;
+#screen2 .daily-number {
+  font-size: 2rem;
+  margin: 10px 0;
 }
-#screen2 .text-boxes {
+#screen2 #qr-image {
+  width: 60%;
+  max-width: 200px;
+  margin: 20px 0;
+}
+#screen2 .info-boxes {
   width: 80%;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-bottom: 20px;
+  gap: 8px;
+  margin-top: 20px;
 }
-#screen2 .text-boxes div {
-  background-color: #fff;
-  padding: 12px;
-  border-radius: 8px;
-  text-align: center;
+#screen2 .info-row {
+  display: flex;
+  justify-content: space-between;
   font-size: 0.9rem;
   color: #333;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-#screen2 .button-bar {
-  position: absolute;
-  bottom: 40px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-#screen2 .button-bar button {
-  width: 80%;
-  padding: 15px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 8px;
-  background-color: #007aff;
-  color: #fff;
-  cursor: pointer;
 }
 
 /* Skjerm 5: Placeholder etter neste */

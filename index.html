@@ -100,30 +100,24 @@
       </div>
   </div>
 
-  <!-- Skjerm 4: Side med bilde og tekstbokser -->
+  <!-- Skjerm 4: Kontrollside -->
   <div id="screen2" class="view">
     <div class="safe-area">
-    <button class="back-btn" id="back-from-screen2">◀ Tilbake</button>
-    <div class="container">
-      <div class="logo">
-        <img src="https://via.placeholder.com/80?text=Logo" alt="Logo">
-        <h1>Statens vegvesen</h1>
+      <div class="top-bar">
+        <button class="back-btn" id="back-from-screen2">◀ Tilbake</button>
+        <span class="bar-title">Kontroll</span>
       </div>
-      <div class="content">
-        <div class="holo-container">
-          <div id="holo-2" class="holo-object"></div>
-        </div>
-        <img id="clickable-image" src="https://via.placeholder.com/300x200?text=Klikk+her" alt="Klikkbart bilde">
-        <div class="text-boxes">
-          <div>Boks 1: Informasjon</div>
-          <div>Boks 2: Informasjon</div>
-          <div>Boks 3: Informasjon</div>
+      <div class="container kontroll-content">
+        <h2>Dagens Tall</h2>
+        <div id="daily-number" class="daily-number"></div>
+        <img id="qr-image" src="https://via.placeholder.com/200x200?text=QR" alt="QR kode">
+        <div class="updated-time" id="kontroll-updated"></div>
+        <div class="info-boxes">
+          <div class="info-row"><span>Førerkortnummer</span></div>
+          <div class="info-row"><span>Fødselsnummer</span></div>
+          <div class="info-row"><span>Utstedt</span><span class="right">Gyldig t.o.m.</span></div>
         </div>
       </div>
-    </div>
-    <div class="button-bar">
-      <button id="btn-to-screen3">Neste</button>
-    </div>
     </div>
   </div>
 
