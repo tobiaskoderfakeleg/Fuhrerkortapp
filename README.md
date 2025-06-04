@@ -1,1 +1,19 @@
-# Fuhrerkortapp
+# Førerkort PWA
+
+A small prototype of a digital Norwegian driver's licence built as a progressive web app. The project demonstrates PIN-based access, hologram animations using device orientation and simple offline support via a service worker. It is intended for demonstration and learning purposes only.
+
+## Running the app locally
+
+1. Clone or download this repository.
+2. From the project folder, start a simple web server (the service worker requires running over HTTP):
+
+   ```bash
+   # Example using Python
+   python3 -m http.server 8000
+   ```
+   or
+   ```bash
+   # Example using Node
+   npx serve .
+   ```
+3. Open your browser at `http://localhost:8000` to use the app. You can then add it to your home screen to run it in standalone mode.
