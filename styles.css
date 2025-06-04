@@ -135,7 +135,7 @@ html, body {
   left: 50%;
   width: 500px;
   height: 500px;
-  transform: translate(0%, 0%);
+  transform: translate(25%, 25%);
   margin: 0;
   z-index: 0;
 }
@@ -147,7 +147,7 @@ html, body {
   top: 0;
   left: 0;
   transform: rotate(0deg);
-  animation: holo-spin 15s linear infinite;
+  animation: holo-spin 45s linear infinite;
 }
 
 @keyframes holo-spin {
