@@ -224,6 +224,22 @@ function handleOrientation2(e) {
   }
 }
 
+  // Update the "Sist oppdatert" timestamp on the license screen
+  function updateTimestamp() {
+    const el = document.getElementById('updated-time');
+    if (!el) return;
+    const now = new Date();
+    const options = {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit'
+    };
+    el.textContent = 'Sist oppdatert: ' +
+      now.toLocaleString('no-NO', options).replace(',', '');
+  }
+
   // 9) Reset transforms when screens switch
   function resetTransforms() {
     document.getElementById('holo-main').style.transform =
