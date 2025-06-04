@@ -1,0 +1,381 @@
+/* Root: no padding on html/body */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #f5f5f5;
+  font-family: sans-serif;
+  color: #333;
+}
+
+/* Each “view” is fixed and now shorter by the bottom inset */
+.view {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  /* 100vh minus home‐indicator inset so no blank bar at bottom */
+  height: calc(100vh - env(safe-area-inset-bottom));
+  overflow: hidden;
+  background-color: #f5f5f5;
+}
+
+/* Safe‐area wrapper only handles top/left/right */
+.safe-area {
+  box-sizing: border-box;
+  /* push content below notch on iOS */
+  padding-top: env(safe-area-inset-top);
+  /* remove bottom padding entirely */
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Vis skjermen som aktiv */
+.active {
+  display: block;
+}
+
+/* Tilbake-knapp */
+.back-btn {
+  position: absolute;
+  top: calc(20px + env(safe-area-inset-top));
+  left: 20px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #333;
+  z-index: 10;
+  cursor: pointer;
+}
+
+/* Profil-knapp øverst til høyre */
+.profile-btn {
+  position: absolute;
+  top: calc(20px + env(safe-area-inset-top));
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #333;
+  z-index: 10;
+  cursor: pointer;
+}
+
+/* Felles container for innhold */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* PIN-skjerm */
+#pin-view {
+  background-color: #fff;
+}
+#pin-view h2 {
+  margin-top: 100px;
+  font-size: 1.2rem;
+  color: #333;
+}
+#pin-view .pin-container {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+#pin-view .pin-box {
+  width: 50px;
+  height: 50px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1.5rem;
+  text-align: center;
+  background: #f9f9f9;
+  color: #333;
+}
+#pin-view .pin-box:focus {
+  border-color: #007aff;
+  outline: none;
+}
+#pin-view .hint {
+  margin-top: 15px;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Hologram container */
+.holo-container {
+  position: relative;
+  width: 80%;
+  height: 40%;
+  perspective: 800px;
+  margin-bottom: 20px;
+}
+.holo-object {
+  width: 100px;
+  height: 100px;
+  background-color: rgba(0, 122, 255, 0.5);
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-style: preserve-3d;
+  transform: translate(-50%, -50%) rotateX(0deg) rotateY(0deg);
+  transition: transform 0.1s ease-out;
+}
+
+/* Hovedskjerm */
+#main-screen {
+  background-color: #f5f5f5;
+}
+#main-screen .logo {
+  margin-top: 60px;
+  text-align: center;
+  z-index: 2;
+}
+#main-screen .logo img {
+  width: 80px;
+  height: auto;
+  margin-bottom: 10px;
+}
+#main-screen .logo h1 {
+  font-size: 1rem;
+  color: #333;
+  margin: 0;
+}
+#main-screen .background-art {
+  position: absolute;
+  top: 0;
+  right: -50px;
+  width: 200px;
+  height: 200px;
+  background: url('https://via.placeholder.com/200?text=NORG') no-repeat center;
+  background-size: contain;
+  opacity: 0.1;
+  z-index: 1;
+}
+#main-screen .button-bar {
+  position: absolute;
+  bottom: 40px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+  z-index: 2;
+}
+#main-screen .button-bar button {
+  width: 80%;
+  padding: 15px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  color: #333;
+  cursor: pointer;
+}
+#main-screen #btn-top {
+  background-color: #ff9500;
+}
+#main-screen #btn-bottom {
+  background-color: #e0e0e0;
+}
+
+/* "Ditt førerkort"-skjerm */
+#license-screen {
+  background-color: #f5f5f5;
+}
+#license-screen .logo {
+  margin-top: 20px;
+  text-align: center;
+  z-index: 2;
+}
+#license-screen .logo img {
+  width: 60px;
+  height: auto;
+  margin-bottom: 8px;
+}
+#license-screen .logo h1 {
+  font-size: 1rem;
+  color: #333;
+  margin: 0;
+}
+#license-screen .background-art {
+  position: absolute;
+  top: 0;
+  right: -40px;
+  width: 150px;
+  height: 150px;
+  background: url('https://via.placeholder.com/150?text=N') no-repeat center;
+  background-size: contain;
+  opacity: 0.1;
+  z-index: 1;
+}
+#license-screen .profile-pic-container {
+  margin-top: 20px;
+  width: 120px;
+  height: 160px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
+}
+#license-screen .profile-pic-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: pointer;
+}
+#license-screen .person-info {
+  margin-top: 16px;
+  text-align: center;
+  z-index: 2;
+}
+#license-screen .person-info h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+#license-screen .person-info p {
+  margin: 4px 0 0 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+#license-screen .license-cards {
+  display: flex;
+  gap: 10px;
+  margin-top: 24px;
+  z-index: 2;
+}
+#license-screen .card {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 12px;
+  width: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 2;
+}
+#license-screen .card h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: #333;
+}
+#license-screen .card img {
+  margin-top: 8px;
+  width: 24px;
+  height: 24px;
+  opacity: 0.7;
+}
+#license-screen .updated-time {
+  margin-top: 24px;
+  font-size: 0.8rem;
+  color: #999;
+  z-index: 2;
+}
+
+/* Kontroll-knappen på license-screen */
+#license-screen .control-btn {
+  position: absolute;
+  bottom: calc(20px + env(safe-area-inset-bottom));
+  right: 20px;          
+  width: auto;          
+  background-color: #333; 
+  color: #fff;
+  padding: 12px 20px;   
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  z-index: 2;
+}
+
+/* Skjerm 4: Side med bilde og tekstbokser */
+#screen2 .back-btn {
+  display: block;
+}
+#screen2 .logo {
+  margin-top: 60px;
+  text-align: center;
+}
+#screen2 .logo img {
+  width: 80px;
+  height: auto;
+  margin-bottom: 10px;
+}
+#screen2 .logo h1 {
+  font-size: 1rem;
+  color: #333;
+}
+#screen2 .content {
+  margin-top: 20px;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#screen2 img {
+  width: 70%;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+#screen2 .text-boxes {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+#screen2 .text-boxes div {
+  background-color: #fff;
+  padding: 12px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #333;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+#screen2 .button-bar {
+  position: absolute;
+  bottom: 40px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+#screen2 .button-bar button {
+  width: 80%;
+  padding: 15px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #007aff;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* Skjerm 5: Placeholder etter neste */
+#screen3 .back-btn {
+  display: block;
+}
+#screen3 .container {
+  justify-content: flex-start;
+  padding-top: 80px;
+}
+#screen3 h1 {
+  font-size: 1.5rem;
+  color: #333;
+}
+#screen3 p {
+  font-size: 1rem;
+  color: #555;
+  padding: 0 20px;
+}

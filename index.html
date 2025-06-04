@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+
+  <!-- 1A. Make the site fill the screen and set viewport -->
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <!-- 1B. Tell iOS Safari to run in standalone mode -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <!-- 1C. Set the status‐bar appearance (blend with app background) -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <!-- 1D. Name that shows under the Home-Screen icon -->
+  <meta name="apple-mobile-web-app-title" content="Førerkort">
+
+  <!-- 1E. Link to a touch icon displayed on iOS Home Screen (192×192px or larger) -->
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+
+  <!-- 1F. Link to the Web App Manifest (describes your PWA) -->
+  <link rel="manifest" href="/manifest.json">
+
+  <title>Førerkort</title>
+
+  <!-- Your existing CSS link: -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Corrected PIN‐view structure -->
+<div id="pin-view" class="view active">
+  <div class="safe-area">
+    <div class="container">
+      <h2>Tast inn din personlige kode</h2>
+      <div class="pin-container">
+        <input type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="pin-box" id="pin-1">
+        <input type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="pin-box" id="pin-2">
+        <input type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="pin-box" id="pin-3">
+        <input type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="pin-box" id="pin-4">
+      </div>
+      <div class="hint">Bruk fingeravtrykk/ansiktsgjenkjenning</div>
+    </div>
+  </div>
+</div>
+
+  <!-- Skjerm 2: Hovedskjerm -->
+  <div id="main-screen" class="view">
+    <div class="safe-area">
+      <button class="profile-btn" id="profile-btn-main">👤</button>
+      <div class="background-art"></div>
+      <div class="container">
+        <div class="logo">
+          <img src="https://via.placeholder.com/80?text=Logo" alt="Logo">
+          <h1>Statens vegvesen</h1>
+        </div>
+        <div class="holo-container">
+          <div id="holo-main" class="holo-object"></div>
+        </div>
+      </div>
+      <div class="button-bar">
+        <button id="btn-top">Ditt førerkort</button>
+        <button id="btn-bottom">Skann QR-kode</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Skjerm 3: Ditt førerkort -->
+  <div id="license-screen" class="view">
+     <div class="safe-area">
+        <button class="back-btn" id="back-from-license">◀ Tilbake</button>
+          <div class="background-art"></div>
+            <div class="container">
+             <div class="profile-pic-container">
+        <img id="profile-pic" src="https://via.placeholder.com/120x160?text=Bild" alt="Profilbilde">
+      </div>
+      <div class="person-info">
+        <h2>TOBIAS HØGSETH SANDØY</h2>
+        <p id="personal-number">110406 97553</p>
+      </div>
+      <div class="license-cards">
+        <div class="card">
+          <h3>A1</h3>
+          <img src="https://via.placeholder.com/24?text=🏵" alt="A1 ikonet">
+        </div>
+        <div class="card">
+          <h3>AM</h3>
+          <img src="https://via.placeholder.com/24?text=🏵" alt="AM ikonet">
+        </div>
+        <div class="card">
+          <h3>B</h3>
+          <img src="https://via.placeholder.com/24?text=🚗" alt="B ikonet">
+        </div>
+      </div>
+      <div class="updated-time" id="updated-time"></div>
+    </div>
+    <button class="control-btn" id="control-btn">Kontroll</button>
+      </div>
+  </div>
+
+  <!-- Skjerm 4: Side med bilde og tekstbokser -->
+  <div id="screen2" class="view">
+    <div class="safe-area">
+    <button class="back-btn" id="back-from-screen2">◀ Tilbake</button>
+    <div class="container">
+      <div class="logo">
+        <img src="https://via.placeholder.com/80?text=Logo" alt="Logo">
+        <h1>Statens vegvesen</h1>
+      </div>
+      <div class="content">
+        <div class="holo-container">
+          <div id="holo-2" class="holo-object"></div>
+        </div>
+        <img id="clickable-image" src="https://via.placeholder.com/300x200?text=Klikk+her" alt="Klikkbart bilde">
+        <div class="text-boxes">
+          <div>Boks 1: Informasjon</div>
+          <div>Boks 2: Informasjon</div>
+          <div>Boks 3: Informasjon</div>
+        </div>
+      </div>
+    </div>
+    <div class="button-bar">
+      <button id="btn-to-screen3">Neste</button>
+    </div>
+    </div>
+  </div>
+
+  <!-- Skjerm 5: Placeholder etter neste -->
+  <div id="screen3" class="view">
+    <div class="safe-area">
+    <button class="back-btn" id="back-from-screen3">◀ Tilbake</button>
+    <div class="container">
+      <h1>Ny Side</h1>
+      <p>Denne siden kommer etter bilde eller knapp på forrige side.</p>
+    </div>
+    </div>
+  </div>
+
+  <!-- Link to external JS -->
+  <script src="script.js"></script>
+</body>
+</html>
