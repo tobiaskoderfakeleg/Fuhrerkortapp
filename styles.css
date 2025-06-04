@@ -131,10 +131,10 @@ html, body {
 /* Main screen hologram overrides */
 #main-screen .holo-container {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 200px;
-  height: 200px;
+  top: 70%;
+  left: 100%;
+  width: 500px;
+  height: 500px;
   transform: translate(-50%, -50%);
   margin: 0;
   z-index: 0;
@@ -147,7 +147,7 @@ html, body {
   top: 0;
   left: 0;
   transform: rotate(0deg);
-  animation: holo-spin 6s linear infinite;
+  animation: holo-spin 15s linear infinite;
 }
 
 @keyframes holo-spin {
