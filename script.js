@@ -288,7 +288,11 @@ const handleOrientationControl = createOrientationHandler({
 
   function updateDailyNumber() {
     if (!dailyNumberEl) return;
-    const n = Math.floor(Math.random() * 898) + 101; // range 101-998
+    let n = sessionStorage.getItem('dailyNumber');
+    if (!n) {
+      n = Math.floor(Math.random() * 898) + 101; // range 101-998
+      sessionStorage.setItem('dailyNumber', n);
+    }
     dailyNumberEl.textContent = n;
   }
   
