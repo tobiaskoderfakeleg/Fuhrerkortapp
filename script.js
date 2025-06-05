@@ -31,9 +31,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const screen3 = document.getElementById('screen3');
   const dailyNumberEl = document.getElementById('daily-number');
 
+  // Keep track of the "starting" orientation values so we can
+  // calculate how far the phone has moved relative to that point.
   const tiltState = {
-    gamma: { last: null, base: null },
-    beta:  { last: null, base: null }
+    gammaBase: null, // reference angle for the left/right tilt
+    betaBase: null   // reference angle for the forward/back tilt
   };
 
   // Cache frequently used elements
@@ -47,77 +49,68 @@ document.addEventListener('DOMContentLoaded', () => {
   const ctrlNoreg = document.getElementById('ctrl-noreg');
   const profilePic = document.getElementById('profile-pic');
 
+  // Reset reference orientation when switching screens or
+  // after permission is granted so that the current device
+  // position becomes the new "zero" point for calculations.
   function resetTiltState() {
-    tiltState.gamma.last = null;
-    tiltState.gamma.base = null;
-    tiltState.beta.last = null;
-    tiltState.beta.base = null;
+    tiltState.gammaBase = null;
+    tiltState.betaBase = null;
   }
 
-  function updateAxis(state, value, max) {
-    if (state.base === null) {
-      state.base = value;
-      state.last = value;
-      return 0;
-    }
-
-    let delta = value - state.last;
-    if (delta > 180) delta -= 360;
-    if (delta < -180) delta += 360;
-    state.last = value;
-
-    if (Math.abs(delta) < 0.5) delta = 0;
-
-    state.offset += delta;
-
-    let diff = value - state.base;
+  // Helper to keep angle differences within the -180 → 180 range
+  function angleDiff(current, base) {
+    let diff = current - base;
     if (diff > 180) diff -= 360;
     if (diff < -180) diff += 360;
-
-    if (Math.abs(diff) < 1) {
-      state.base = value;
-      diff = 0;
-    }
-
-    if (diff > max) diff = max;
-    if (diff < -max) diff = -max;
-
     return diff;
   }
 
-  function applyDeadZone(value, threshold = 1.5) {
-    return Math.abs(value) < threshold ? 0 : value;
+  // Clamp a number between a minimum and maximum value
+  function clamp(val, min, max) {
+    return Math.max(min, Math.min(max, val));
   }
 
-  function createOrientationHandler(holo, opts = {}) {
-    const { norge, noreg, bar } = opts;
+  /**
+   * Create an orientation handler for a set of hologram elements.
+   * Each handler remembers the initial device orientation and then
+   * updates the UI relative to that starting position.
+   */
+  function createOrientationHandler(opts = {}) {
+    const { square, norge, noreg, bar } = opts;
     return e => {
-      const diffGamma = applyDeadZone(updateAxis(tiltState.gamma, e.gamma, 20));
-      const holoOpacity = diffGamma >= 0
-        ? 0.3 + (diffGamma / 20) * 0.45
-        : 0.75 + (diffGamma / 20) * 0.45;
-      if (holo) {
-        holo.style.backgroundColor = `rgba(0, 0, 0, ${holoOpacity.toFixed(2)})`;
+      // Remember the orientation at the moment the handler starts so
+      // all calculations are relative to that position.
+      if (tiltState.gammaBase === null) tiltState.gammaBase = e.gamma;
+      if (tiltState.betaBase === null) tiltState.betaBase = e.beta;
+
+      // ----- Type 1: rotating square opacity (gamma axis) -----
+      const gDiff = angleDiff(e.gamma, tiltState.gammaBase);
+      const gProg = clamp(Math.abs(gDiff) / 40, 0, 1); // 0 → 1 over 40°
+      if (square) {
+        const opacity = 0.3 + gProg * 0.4; // 30% → 70%
+        square.style.backgroundColor = `rgba(0,0,0,${opacity.toFixed(2)})`;
       }
 
-      const diffBeta = applyDeadZone(updateAxis(tiltState.beta, e.beta, 30));
-      const prog = Math.abs(diffBeta) / 30;
-
-      if (bar) {
-        const g = diffBeta >= 0
-          ? Math.round(255 * (1 - prog))
-          : Math.round(255 * prog);
-        bar.style.backgroundColor = `rgb(255, ${g}, 0)`;
-      }
-
+      // ----- Type 2: two line text fade (beta axis) -----
+      const bDiff = angleDiff(e.beta, tiltState.betaBase);
+      const bProg = clamp(bDiff / 35, -1, 1); // -1 ← 35° → 1
       if (norge && noreg) {
-        if (diffBeta >= 0) {
-          norge.style.opacity = (0.80 - 0.45 * prog).toFixed(2);
-          noreg.style.opacity = (0.35 + 0.45 * prog).toFixed(2);
+        if (bProg >= 0) {
+          // Tilting away from user
+          norge.style.opacity = (0.3 + 0.4 * bProg).toFixed(2);
+          noreg.style.opacity = (0.7 - 0.4 * bProg).toFixed(2);
         } else {
-          norge.style.opacity = (0.35 + 0.45 * prog).toFixed(2);
-          noreg.style.opacity = (0.80 - 0.45 * prog).toFixed(2);
+          // Tilting towards user
+          norge.style.opacity = (0.3 - 0.4 * bProg).toFixed(2);
+          noreg.style.opacity = (0.7 + 0.4 * bProg).toFixed(2);
         }
+      }
+
+      // ----- Type 3: color bar (beta axis magnitude) -----
+      if (bar) {
+        const barProg = clamp(Math.abs(bDiff) / 35, 0, 1);
+        const g = Math.round(255 * (1 - barProg));
+        bar.style.backgroundColor = `rgb(255, ${g}, 0)`;
       }
     };
   }
@@ -260,16 +253,19 @@ function startHologram() {
     screen2.classList.add('active');
   });
 
-const handleOrientationMain = createOrientationHandler(holoMain, {
+const handleOrientationMain = createOrientationHandler({
+  square: holoMain,
   norge: lineNorge,
   noreg: lineNoreg
 });
 
-const handleOrientationLicense = createOrientationHandler(holoLicense, {
+const handleOrientationLicense = createOrientationHandler({
+  square: holoLicense,
   bar: holoBar
 });
 
-const handleOrientationControl = createOrientationHandler(holoControl, {
+const handleOrientationControl = createOrientationHandler({
+  square: holoControl,
   norge: ctrlNorge,
   noreg: ctrlNoreg
 });
@@ -298,9 +294,24 @@ const handleOrientationControl = createOrientationHandler(holoControl, {
   
   // 9) Reset transforms when screens switch
   function resetTransforms() {
-    if (holoMain) holoMain.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-    if (holoLicense) holoLicense.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-    if (holoControl) holoControl.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+    // All hologram squares start at 30% opacity
+    if (holoMain) holoMain.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
+    if (holoLicense) holoLicense.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
+    if (holoControl) holoControl.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
+
+    // Text holograms default with Noreg visible and Norge faded
+    if (lineNorge && lineNoreg) {
+      lineNorge.style.opacity = '0.3';
+      lineNoreg.style.opacity = '0.7';
+    }
+    if (ctrlNorge && ctrlNoreg) {
+      ctrlNorge.style.opacity = '0.3';
+      ctrlNoreg.style.opacity = '0.7';
+    }
+
+    // Color bar starts yellow
+    if (holoBar) holoBar.style.backgroundColor = 'rgb(255, 255, 0)';
+
     resetTiltState();
   }
   const observer = new MutationObserver(mutations => {
