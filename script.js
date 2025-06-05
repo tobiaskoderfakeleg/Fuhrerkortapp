@@ -101,8 +101,8 @@ document.addEventListener('DOMContentLoaded', () => {
           noreg.style.opacity = (0.7 - 0.4 * bProg).toFixed(2);
         } else {
           // Tilting towards user
-          norge.style.opacity = (0.3 - 0.4 * bProg).toFixed(2);
-          noreg.style.opacity = (0.7 + 0.4 * bProg).toFixed(2);
+          norge.style.opacity = (0.7 - 0.4 * bProg).toFixed(2);
+          noreg.style.opacity = (0.3 + 0.4 * bProg).toFixed(2);
         }
       }
 
