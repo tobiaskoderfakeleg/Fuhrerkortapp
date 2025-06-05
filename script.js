@@ -85,7 +85,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // ----- Type 1: rotating square opacity (gamma axis) -----
       const gDiff = angleDiff(e.gamma, tiltState.gammaBase);
-      const gProg = clamp(Math.abs(gDiff) / 40, 0, 1); // 0 → 1 over 40°
+      // Map gamma from -15° → 30° to a 0–1 range
+      const gProg = clamp((gDiff + 15) / 45, 0, 1);
       if (square) {
         const opacity = 0.3 + gProg * 0.4; // 30% → 70%
         square.style.backgroundColor = `rgba(0,0,0,${opacity.toFixed(2)})`;
@@ -93,23 +94,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // ----- Type 2: two line text fade (beta axis) -----
       const bDiff = angleDiff(e.beta, tiltState.betaBase);
-      const bProg = clamp(bDiff / 35, -1, 1); // -1 ← 35° → 1
+      // 0 when flat → 1 when tilted ~90° towards the user
+      const bProg = clamp(bDiff / 90, 0, 1);
       if (norge && noreg) {
-        if (bProg >= 0) {
-          // Tilting away from user
-          norge.style.opacity = (0.3 + 0.4 * bProg).toFixed(2);
-          noreg.style.opacity = (0.7 - 0.4 * bProg).toFixed(2);
-        } else {
-          // Tilting towards user
-          norge.style.opacity = (0.7 - 0.4 * bProg).toFixed(2);
-          noreg.style.opacity = (0.3 + 0.4 * bProg).toFixed(2);
-        }
+        const topOp = (0.7 - 0.4 * bProg).toFixed(2);   // 70% → 30%
+        const bottomOp = (0.3 + 0.4 * bProg).toFixed(2); // 30% → 70%
+        norge.style.opacity = topOp;
+        noreg.style.opacity = bottomOp;
       }
 
       // ----- Type 3: color bar (beta axis magnitude) -----
       if (bar) {
-        const barProg = clamp(Math.abs(bDiff) / 35, 0, 1);
-        const g = Math.round(255 * (1 - barProg));
+        const barProg = clamp(bDiff / 90, 0, 1); // 0 → 1 over 90° tilt
+        const g = Math.round(255 * (1 - barProg)); // yellow → red
         bar.style.backgroundColor = `rgb(255, ${g}, 0)`;
       }
     };
