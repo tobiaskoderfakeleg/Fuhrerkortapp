@@ -8,8 +8,19 @@ if ('serviceWorker' in navigator) {
       console.warn('Service Worker registration failed:', err);
     });
 }
+
+// Show an offline banner when the network is unavailable
+function updateOnlineStatus() {
+  const banner = document.getElementById('offline-banner');
+  if (!banner) return;
+  banner.style.display = navigator.onLine ? 'none' : 'block';
+}
+
+window.addEventListener('online', updateOnlineStatus);
+window.addEventListener('offline', updateOnlineStatus);
 // Forsikre at DOM er lastet
 document.addEventListener('DOMContentLoaded', () => {
+  updateOnlineStatus();
   // Element-pekere
   const pinBoxes = Array.from(document.querySelectorAll('#pin-view .pin-box'));
   pinBoxes[0].focus();  // Autofokus på første PIN-boks
