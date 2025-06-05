@@ -66,6 +66,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (delta < -180) delta += 360;
     state.last = value;
 
+    if (Math.abs(delta) < 0.5) delta = 0;
+
+    state.offset += delta;
+
     let diff = value - state.base;
     if (diff > 180) diff -= 360;
     if (diff < -180) diff += 360;
