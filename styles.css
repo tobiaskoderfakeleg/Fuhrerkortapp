@@ -150,6 +150,23 @@ html, body {
   animation: holo-spin 45s linear infinite;
 }
 
+#holo-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  line-height: 1.2;
+  z-index: 2;
+}
+
+#holo-text div {
+  opacity: 0.4;
+  transition: opacity 0.1s ease-out;
+}
+
 @keyframes holo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }

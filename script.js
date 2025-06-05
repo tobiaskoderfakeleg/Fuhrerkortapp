@@ -146,15 +146,27 @@ function startHologram() {
   });
 
 function handleOrientationMain(e) {
-  const y = e.gamma; // -90 … 90 (left/right)
+  const y = e.gamma; // left/right
+  const x = e.beta;  // front/back
   const holo = document.getElementById('holo-main');
+  const norge = document.getElementById('line-norge');
+  const noreg = document.getElementById('line-noreg');
 
-  // Opacity ranges from 0.5 (flat) to 0.9 at ~35° right tilt
-  let opacity = 0.5;
-  if (y >= 0) {
-    opacity = Math.min(0.5 + (y / 35) * 0.4, 0.9);
+  // Spinning square opacity based on left/right tilt
+  const magY = Math.min(Math.abs(y) / 30, 1);
+  const holoOpacity = 0.4 + magY * 0.3;
+  holo.style.backgroundColor = `rgba(0, 0, 0, ${holoOpacity})`;
+
+  // Text opacity based on front/back tilt relative to upright (~90deg)
+  const diff = x - 90;
+  const magX = Math.min(Math.abs(diff) / 30, 1);
+  norge.style.opacity = '0.4';
+  noreg.style.opacity = '0.4';
+  if (diff > 0) {
+    norge.style.opacity = (0.4 + 0.3 * magX).toFixed(2);
+  } else if (diff < 0) {
+    noreg.style.opacity = (0.4 + 0.3 * magX).toFixed(2);
   }
-  holo.style.backgroundColor = `rgba(0, 0, 0, ${opacity})`;
 }
 
 function handleOrientationLicense(e) {
