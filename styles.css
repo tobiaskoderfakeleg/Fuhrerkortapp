@@ -320,7 +320,7 @@ html, body {
   background: #fff;
   border: 1px solid #ccc;
   border-radius: 4px;
-  overflow: hidden;
+  overflow: visible;
   position: relative;
   z-index: 2;
 }
@@ -329,6 +329,17 @@ html, body {
   height: 100%;
   object-fit: cover;
   cursor: pointer;
+}
+#license-screen .holo-bar {
+  position: absolute;
+  top: 20px;
+  left: calc(50% + 65px);
+  width: 15px;
+  height: 160px;
+  background-color: rgb(255, 255, 0);
+  transition: background-color 0.1s linear;
+  pointer-events: none;
+  z-index: 3;
 }
 #license-screen .person-info {
   margin-top: 16px;
