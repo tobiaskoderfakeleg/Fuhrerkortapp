@@ -62,6 +62,10 @@ document.addEventListener('DOMContentLoaded', () => {
     return diff;
   }
 
+  function applyDeadZone(value, threshold = 1.5) {
+    return Math.abs(value) < threshold ? 0 : value;
+  }
+
   // A quick helper to remember in this session whether we've already asked for and received DeviceOrientation permission.
 function hasHoloPermission() {
   return sessionStorage.getItem('holoGranted') === 'true';
@@ -205,7 +209,7 @@ function handleOrientationMain(e) {
   const norge = document.getElementById('line-norge');
   const noreg = document.getElementById('line-noreg');
 
-  const diffGamma = updateAxis(tiltState.gamma, y, 20);
+  const diffGamma = applyDeadZone(updateAxis(tiltState.gamma, y, 20));
   let holoOpacity;
   if (diffGamma >= 0) {
     holoOpacity = 0.3 + (diffGamma / 20) * 0.45;
@@ -214,7 +218,7 @@ function handleOrientationMain(e) {
   }
   holo.style.backgroundColor = `rgba(0, 0, 0, ${holoOpacity.toFixed(2)})`;
 
-  const diffBeta = updateAxis(tiltState.beta, x, 30);
+  const diffBeta = applyDeadZone(updateAxis(tiltState.beta, x, 30));
   const prog = Math.abs(diffBeta) / 30;
   if (diffBeta >= 0) {
     norge.style.opacity = (0.35 + 0.45 * prog).toFixed(2);
@@ -231,7 +235,7 @@ function handleOrientationLicense(e) {
   const holo = document.getElementById('holo-license');
   const bar = document.getElementById('holo-bar');
 
-  const diffG = updateAxis(tiltState.gamma, y, 20);
+  const diffG = applyDeadZone(updateAxis(tiltState.gamma, y, 20));
   let opacity;
   if (diffG >= 0) {
     opacity = 0.3 + (diffG / 20) * 0.45;
@@ -240,7 +244,7 @@ function handleOrientationLicense(e) {
   }
   holo.style.backgroundColor = `rgba(0, 0, 0, ${opacity.toFixed(2)})`;
 
-  const diffB = updateAxis(tiltState.beta, x, 30);
+  const diffB = applyDeadZone(updateAxis(tiltState.beta, x, 30));
   const prog = Math.abs(diffB) / 30;
   let g;
   if (diffB >= 0) {
@@ -258,7 +262,7 @@ function handleOrientationControl(e) {
   const norge = document.getElementById('ctrl-norge');
   const noreg = document.getElementById('ctrl-noreg');
 
-  const diffGamma = updateAxis(tiltState.gamma, y, 20);
+  const diffGamma = applyDeadZone(updateAxis(tiltState.gamma, y, 20));
   let holoOpacity;
   if (diffGamma >= 0) {
     holoOpacity = 0.3 + (diffGamma / 20) * 0.45;
@@ -267,7 +271,7 @@ function handleOrientationControl(e) {
   }
   holo.style.backgroundColor = `rgba(0, 0, 0, ${holoOpacity.toFixed(2)})`;
 
-  const diffBeta = updateAxis(tiltState.beta, x, 30);
+  const diffBeta = applyDeadZone(updateAxis(tiltState.beta, x, 30));
   const prog = Math.abs(diffBeta) / 30;
   if (diffBeta >= 0) {
     norge.style.opacity = (0.35 + 0.45 * prog).toFixed(2);
