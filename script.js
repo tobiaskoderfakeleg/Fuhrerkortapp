@@ -125,6 +125,9 @@ function startHologram() {
     licenseScreen.classList.remove('active');
     screen2.classList.add('active');
     window.removeEventListener('deviceorientation', handleOrientationLicense);
+    if (hasHoloPermission()) {
+      window.addEventListener('deviceorientation', handleOrientationControl);
+    }
     updateDailyNumber();
     updateTimestamp('kontroll-updated');
   });
@@ -133,6 +136,7 @@ function startHologram() {
   document.getElementById('back-from-screen2').addEventListener('click', () => {
     screen2.classList.remove('active');
     licenseScreen.classList.add('active');
+    window.removeEventListener('deviceorientation', handleOrientationControl);
     if (hasHoloPermission()) {
       window.addEventListener('deviceorientation', handleOrientationLicense);
     }
@@ -170,22 +174,32 @@ function handleOrientationMain(e) {
 }
 
 function handleOrientationLicense(e) {
-  const x = e.beta;
   const y = e.gamma;
   const holo = document.getElementById('holo-license');
+  const magY = Math.min(Math.abs(y) / 30, 1);
+  const opacity = 0.4 + magY * 0.3;
+  holo.style.backgroundColor = `rgba(0, 0, 0, ${opacity})`;
+}
 
-  holo.style.transform = `translate(-50%, -50%) rotateX(${x / 2}deg) rotateY(${y / 2}deg)`;
+function handleOrientationControl(e) {
+  const y = e.gamma;
+  const x = e.beta;
+  const holo = document.getElementById('holo-control');
+  const norge = document.getElementById('ctrl-norge');
+  const noreg = document.getElementById('ctrl-noreg');
 
-  if (x > 30) {
-    holo.style.backgroundColor = 'green';
-  } else if (x < -30) {
-    holo.style.backgroundColor = 'red';
-  } else if (y > 30) {
-    holo.style.backgroundColor = 'blue';
-  } else if (y < -30) {
-    holo.style.backgroundColor = 'purple';
-  } else {
-    holo.style.backgroundColor = 'rgba(0, 122, 255, 0.5)';
+  const magY = Math.min(Math.abs(y) / 30, 1);
+  const holoOpacity = 0.4 + magY * 0.3;
+  holo.style.backgroundColor = `rgba(0, 0, 0, ${holoOpacity})`;
+
+  const diff = x - 90;
+  const magX = Math.min(Math.abs(diff) / 30, 1);
+  norge.style.opacity = '0.4';
+  noreg.style.opacity = '0.4';
+  if (diff > 0) {
+    norge.style.opacity = (0.4 + 0.3 * magX).toFixed(2);
+  } else if (diff < 0) {
+    noreg.style.opacity = (0.4 + 0.3 * magX).toFixed(2);
   }
 }
 
@@ -217,7 +231,11 @@ function handleOrientationLicense(e) {
     m.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
     const l = document.getElementById('holo-license');
     if (l) {
-      l.style.transform = 'translate(-50%, -50%) rotateX(0deg) rotateY(0deg)';
+      l.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+    }
+    const c = document.getElementById('holo-control');
+    if (c) {
+      c.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
     }
   }
   const observer = new MutationObserver(mutations => {
