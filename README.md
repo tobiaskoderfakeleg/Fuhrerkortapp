@@ -1,6 +1,6 @@
 # Førerkort PWA
 
-A small prototype of a digital Norwegian driver's licence built as a progressive web app. The project demonstrates PIN-based access, hologram animations using device orientation and simple offline support via a service worker. It is intended for demonstration and learning purposes only.
+A small prototype of a digital Norwegian driver's licence built as a progressive web app. The project demonstrates PIN-based access, hologram animations using device orientation and offline support via a service worker that caches core assets. It is intended for demonstration and learning purposes only.
 
 ## Running the app locally
 

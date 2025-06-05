@@ -501,3 +501,16 @@ html, body {
   color: #555;
   padding: 0 20px;
 }
+
+.offline-banner {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #c0392b;
+  color: #fff;
+  padding: 6px;
+  text-align: center;
+  z-index: 9999;
+}
