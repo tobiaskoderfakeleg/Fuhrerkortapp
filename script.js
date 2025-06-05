@@ -32,39 +32,34 @@ document.addEventListener('DOMContentLoaded', () => {
   const dailyNumberEl = document.getElementById('daily-number');
 
   const tiltState = {
-    gamma: { last: null, base: null, dir: 0, output: 0 },
-    beta: { last: null, base: null, dir: 0, output: 0 }
+    gamma: { last: null, base: null, dir: 0 },
+    beta: { last: null, base: null, dir: 0 }
   };
 
   function resetTiltState() {
     tiltState.gamma.last = tiltState.gamma.base = null;
     tiltState.gamma.dir = 0;
-    tiltState.gamma.output = 0;
     tiltState.beta.last = tiltState.beta.base = null;
     tiltState.beta.dir = 0;
-    tiltState.beta.output = 0;
   }
 
   function updateAxis(state, value, max) {
-    const SMOOTH = 0.8;
     if (state.last === null) {
       state.last = value;
       state.base = value;
-      state.output = 0;
-      return state.output;
+      return 0;
     }
     const delta = value - state.last;
-    const dir = Math.abs(delta) > 1 ? Math.sign(delta) : state.dir;
-    if (dir !== state.dir) {
+    const dir = Math.sign(delta);
+    if (dir !== 0 && dir !== state.dir) {
       state.dir = dir;
       state.base = state.last;
     }
     state.last = value;
-    let rawDiff = value - state.base;
-    if (rawDiff > max) rawDiff = max;
-    if (rawDiff < -max) rawDiff = -max;
-    state.output = state.output * SMOOTH + rawDiff * (1 - SMOOTH);
-    return state.output;
+    let diff = value - state.base;
+    if (diff > max) diff = max;
+    if (diff < -max) diff = -max;
+    return diff;
   }
 
   // A quick helper to remember in this session whether we've already asked for and received DeviceOrientation permission.

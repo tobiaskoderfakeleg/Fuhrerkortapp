@@ -332,14 +332,13 @@ html, body {
 }
 #license-screen .holo-bar {
   position: absolute;
-  top: 20px;
-  left: calc(50% + 65px);
+  left: calc(100% + 5px);
+  top: 0;
   width: 15px;
-  height: 160px;
+  height: 100%;
   background-color: rgb(255, 255, 0);
   transition: background-color 0.1s linear;
   pointer-events: none;
-  z-index: 3;
 }
 #license-screen .person-info {
   margin-top: 16px;
