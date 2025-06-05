@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // ----- Type 2: two line text fade (beta axis) -----
       const bDiff = angleDiff(e.beta, tiltState.betaBase);
       // 0 when flat → 1 when tilted ~90° towards the user
-      const bProg = clamp(bDiff / 45, 0, 1);
+      const bProg = clamp(bDiff / 30, 0, 1);
       if (norge && noreg) {
         const topOp = (0.7 - 0.4 * bProg).toFixed(2);   // 70% → 30%
         const bottomOp = (0.3 + 0.4 * bProg).toFixed(2); // 30% → 70%
@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // ----- Type 3: color bar (beta axis magnitude) -----
       if (bar) {
-        const barProg = clamp(bDiff / 45, 0, 1); // 0 → 1 over 90° tilt
+        const barProg = clamp(bDiff / 30, 0, 1); // 0 → 1 over 90° tilt
         const g = Math.round(255 * (1 - barProg)); // yellow → red
         bar.style.backgroundColor = `rgb(255, ${g}, 0)`;
       }
