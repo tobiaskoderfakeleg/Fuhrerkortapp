@@ -157,7 +157,7 @@ html, body {
   top: 0;
   left: 0;
   transform: rotate(0deg);
-  animation: holo-spin 45s linear infinite;
+  animation: holo-spin 60s linear infinite;
 }
 #screen2 .holo-container {
   position: absolute;
@@ -177,7 +177,7 @@ html, body {
   top: 0;
   left: 0;
   transform: rotate(0deg);
-  animation: holo-spin 45s linear infinite;
+  animation: holo-spin 60s linear infinite;
 }
 #holo-license {
   width: 100%;
@@ -187,7 +187,7 @@ html, body {
   top: 0;
   left: 0;
   transform: rotate(0deg);
-  animation: holo-spin 45s linear infinite;
+  animation: holo-spin 60s linear infinite;
 }
 
 #holo-text {
