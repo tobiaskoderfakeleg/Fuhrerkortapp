@@ -380,20 +380,62 @@ html, body {
   z-index: 2;
 }
 
-/* Kontroll-knappen på license-screen */
-#license-screen .control-btn {
+/* Bunnlinje på "Ditt førerkort" */
+#license-screen .license-bottom-bar {
   position: absolute;
+  left: 0;
+  right: 0;
   bottom: calc(20px + env(safe-area-inset-bottom));
-  right: 20px;          
-  width: auto;          
-  background-color: #333; 
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  z-index: 2;
+}
+
+#license-screen .control-btn {
+  position: relative;
+  background-color: #333;
   color: #fff;
-  padding: 12px 20px;   
+  padding: 12px 20px;
   font-size: 1rem;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  z-index: 2;
+}
+
+#license-screen .code-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+#license-screen .code-title {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: #333;
+}
+
+#license-screen .code-box {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 4px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#license-screen .code-number {
+  font-weight: bold;
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+#license-screen .code-label {
+  font-size: 0.7rem;
+  line-height: 1;
 }
 
 /* Skjerm 4: Kontrollside */
