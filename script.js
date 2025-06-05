@@ -64,9 +64,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let delta = value - state.last;
     if (delta > 180) delta -= 360;
     if (delta < -180) delta += 360;
+    state.last = value;
+
+    if (Math.abs(delta) < 0.5) delta = 0;
 
     state.offset += delta;
-    state.last = value;
 
     if (Math.abs(state.offset) < 1) state.offset = 0;
     if (state.offset > max) state.offset = max;
