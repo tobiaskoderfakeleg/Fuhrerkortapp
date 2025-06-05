@@ -32,8 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const dailyNumberEl = document.getElementById('daily-number');
 
   const tiltState = {
-    gamma: { last: null, base: null },
-    beta:  { last: null, base: null }
+    gamma: { last: null, offset: 0 },
+    beta:  { last: null, offset: 0 }
   };
 
   // Cache frequently used elements
@@ -48,25 +48,31 @@ document.addEventListener('DOMContentLoaded', () => {
   const profilePic = document.getElementById('profile-pic');
 
   function resetTiltState() {
-    tiltState.gamma.last = tiltState.gamma.base = null;
-    tiltState.beta.last = tiltState.beta.base = null;
+    tiltState.gamma.last = null;
+    tiltState.gamma.offset = 0;
+    tiltState.beta.last = null;
+    tiltState.beta.offset = 0;
   }
 
   function updateAxis(state, value, max) {
-    if (state.base === null) {
-      state.base = value;
+    if (state.last === null) {
       state.last = value;
+      state.offset = 0;
       return 0;
     }
+
+    let delta = value - state.last;
+    if (delta > 180) delta -= 360;
+    if (delta < -180) delta += 360;
+
+    state.offset += delta;
     state.last = value;
-    let diff = value - state.base;
-    if (Math.abs(diff) < 1) {
-      state.base = value;
-      diff = 0;
-    }
-    if (diff > max) diff = max;
-    if (diff < -max) diff = -max;
-    return diff;
+
+    if (Math.abs(state.offset) < 1) state.offset = 0;
+    if (state.offset > max) state.offset = max;
+    if (state.offset < -max) state.offset = -max;
+
+    return state.offset;
   }
 
   function applyDeadZone(value, threshold = 1.5) {
