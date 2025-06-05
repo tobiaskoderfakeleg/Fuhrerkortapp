@@ -32,31 +32,27 @@ document.addEventListener('DOMContentLoaded', () => {
   const dailyNumberEl = document.getElementById('daily-number');
 
   const tiltState = {
-    gamma: { last: null, base: null, dir: 0 },
-    beta: { last: null, base: null, dir: 0 }
+    gamma: { last: null, base: null },
+    beta: { last: null, base: null }
   };
 
   function resetTiltState() {
     tiltState.gamma.last = tiltState.gamma.base = null;
-    tiltState.gamma.dir = 0;
     tiltState.beta.last = tiltState.beta.base = null;
-    tiltState.beta.dir = 0;
   }
 
   function updateAxis(state, value, max) {
-    if (state.last === null) {
-      state.last = value;
+    if (state.base === null) {
       state.base = value;
+      state.last = value;
       return 0;
-    }
-    const delta = value - state.last;
-    const dir = Math.sign(delta);
-    if (dir !== 0 && dir !== state.dir) {
-      state.dir = dir;
-      state.base = state.last;
     }
     state.last = value;
     let diff = value - state.base;
+    if (Math.abs(diff) < 1) {
+      state.base = value;
+      diff = 0;
+    }
     if (diff > max) diff = max;
     if (diff < -max) diff = -max;
     return diff;
@@ -221,11 +217,11 @@ function handleOrientationMain(e) {
   const diffBeta = applyDeadZone(updateAxis(tiltState.beta, x, 30));
   const prog = Math.abs(diffBeta) / 30;
   if (diffBeta >= 0) {
-    norge.style.opacity = (0.35 + 0.45 * prog).toFixed(2);
-    noreg.style.opacity = (0.80 - 0.45 * prog).toFixed(2);
-  } else {
     norge.style.opacity = (0.80 - 0.45 * prog).toFixed(2);
     noreg.style.opacity = (0.35 + 0.45 * prog).toFixed(2);
+  } else {
+    norge.style.opacity = (0.35 + 0.45 * prog).toFixed(2);
+    noreg.style.opacity = (0.80 - 0.45 * prog).toFixed(2);
   }
 }
 
@@ -274,11 +270,11 @@ function handleOrientationControl(e) {
   const diffBeta = applyDeadZone(updateAxis(tiltState.beta, x, 30));
   const prog = Math.abs(diffBeta) / 30;
   if (diffBeta >= 0) {
-    norge.style.opacity = (0.35 + 0.45 * prog).toFixed(2);
-    noreg.style.opacity = (0.80 - 0.45 * prog).toFixed(2);
-  } else {
     norge.style.opacity = (0.80 - 0.45 * prog).toFixed(2);
     noreg.style.opacity = (0.35 + 0.45 * prog).toFixed(2);
+  } else {
+    norge.style.opacity = (0.35 + 0.45 * prog).toFixed(2);
+    noreg.style.opacity = (0.80 - 0.45 * prog).toFixed(2);
   }
 }
 
