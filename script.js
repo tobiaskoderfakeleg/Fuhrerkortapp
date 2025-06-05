@@ -33,8 +33,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const tiltState = {
     gamma: { last: null, base: null },
-    beta: { last: null, base: null }
+    beta:  { last: null, base: null }
   };
+
+  // Cache frequently used elements
+  const holoMain = document.getElementById('holo-main');
+  const holoLicense = document.getElementById('holo-license');
+  const holoControl = document.getElementById('holo-control');
+  const holoBar = document.getElementById('holo-bar');
+  const lineNorge = document.getElementById('line-norge');
+  const lineNoreg = document.getElementById('line-noreg');
+  const ctrlNorge = document.getElementById('ctrl-norge');
+  const ctrlNoreg = document.getElementById('ctrl-noreg');
+  const profilePic = document.getElementById('profile-pic');
 
   function resetTiltState() {
     tiltState.gamma.last = tiltState.gamma.base = null;
@@ -60,6 +71,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function applyDeadZone(value, threshold = 1.5) {
     return Math.abs(value) < threshold ? 0 : value;
+  }
+
+  function createOrientationHandler(holo, opts = {}) {
+    const { norge, noreg, bar } = opts;
+    return e => {
+      const diffGamma = applyDeadZone(updateAxis(tiltState.gamma, e.gamma, 20));
+      const holoOpacity = diffGamma >= 0
+        ? 0.3 + (diffGamma / 20) * 0.45
+        : 0.75 + (diffGamma / 20) * 0.45;
+      if (holo) {
+        holo.style.backgroundColor = `rgba(0, 0, 0, ${holoOpacity.toFixed(2)})`;
+      }
+
+      const diffBeta = applyDeadZone(updateAxis(tiltState.beta, e.beta, 30));
+      const prog = Math.abs(diffBeta) / 30;
+
+      if (bar) {
+        const g = diffBeta >= 0
+          ? Math.round(255 * (1 - prog))
+          : Math.round(255 * prog);
+        bar.style.backgroundColor = `rgb(255, ${g}, 0)`;
+      }
+
+      if (norge && noreg) {
+        if (diffBeta >= 0) {
+          norge.style.opacity = (0.80 - 0.45 * prog).toFixed(2);
+          noreg.style.opacity = (0.35 + 0.45 * prog).toFixed(2);
+        } else {
+          norge.style.opacity = (0.35 + 0.45 * prog).toFixed(2);
+          noreg.style.opacity = (0.80 - 0.45 * prog).toFixed(2);
+        }
+      }
+    };
   }
 
   // A quick helper to remember in this session whether we've already asked for and received DeviceOrientation permission.
@@ -165,9 +209,11 @@ function startHologram() {
       window.addEventListener('deviceorientation', handleOrientationMain);
     }
   });
-  document.getElementById('profile-pic').addEventListener('click', () => {
-    window.open(document.getElementById('profile-pic').src, '_blank');
-  });
+  if (profilePic) {
+    profilePic.addEventListener('click', () => {
+      window.open(profilePic.src, '_blank');
+    });
+  }
   document.getElementById('control-btn').addEventListener('click', () => {
     licenseScreen.classList.remove('active');
     screen2.classList.add('active');
@@ -198,85 +244,19 @@ function startHologram() {
     screen2.classList.add('active');
   });
 
-function handleOrientationMain(e) {
-  const y = e.gamma; // left/right
-  const x = e.beta;  // front/back
-  const holo = document.getElementById('holo-main');
-  const norge = document.getElementById('line-norge');
-  const noreg = document.getElementById('line-noreg');
+const handleOrientationMain = createOrientationHandler(holoMain, {
+  norge: lineNorge,
+  noreg: lineNoreg
+});
 
-  const diffGamma = applyDeadZone(updateAxis(tiltState.gamma, y, 20));
-  let holoOpacity;
-  if (diffGamma >= 0) {
-    holoOpacity = 0.3 + (diffGamma / 20) * 0.45;
-  } else {
-    holoOpacity = 0.75 + (diffGamma / 20) * 0.45;
-  }
-  holo.style.backgroundColor = `rgba(0, 0, 0, ${holoOpacity.toFixed(2)})`;
+const handleOrientationLicense = createOrientationHandler(holoLicense, {
+  bar: holoBar
+});
 
-  const diffBeta = applyDeadZone(updateAxis(tiltState.beta, x, 30));
-  const prog = Math.abs(diffBeta) / 30;
-  if (diffBeta >= 0) {
-    norge.style.opacity = (0.80 - 0.45 * prog).toFixed(2);
-    noreg.style.opacity = (0.35 + 0.45 * prog).toFixed(2);
-  } else {
-    norge.style.opacity = (0.35 + 0.45 * prog).toFixed(2);
-    noreg.style.opacity = (0.80 - 0.45 * prog).toFixed(2);
-  }
-}
-
-function handleOrientationLicense(e) {
-  const y = e.gamma;
-  const x = e.beta;
-  const holo = document.getElementById('holo-license');
-  const bar = document.getElementById('holo-bar');
-
-  const diffG = applyDeadZone(updateAxis(tiltState.gamma, y, 20));
-  let opacity;
-  if (diffG >= 0) {
-    opacity = 0.3 + (diffG / 20) * 0.45;
-  } else {
-    opacity = 0.75 + (diffG / 20) * 0.45;
-  }
-  holo.style.backgroundColor = `rgba(0, 0, 0, ${opacity.toFixed(2)})`;
-
-  const diffB = applyDeadZone(updateAxis(tiltState.beta, x, 30));
-  const prog = Math.abs(diffB) / 30;
-  let g;
-  if (diffB >= 0) {
-    g = Math.round(255 * (1 - prog));
-  } else {
-    g = Math.round(255 * prog);
-  }
-  if (bar) bar.style.backgroundColor = `rgb(255, ${g}, 0)`;
-}
-
-function handleOrientationControl(e) {
-  const y = e.gamma;
-  const x = e.beta;
-  const holo = document.getElementById('holo-control');
-  const norge = document.getElementById('ctrl-norge');
-  const noreg = document.getElementById('ctrl-noreg');
-
-  const diffGamma = applyDeadZone(updateAxis(tiltState.gamma, y, 20));
-  let holoOpacity;
-  if (diffGamma >= 0) {
-    holoOpacity = 0.3 + (diffGamma / 20) * 0.45;
-  } else {
-    holoOpacity = 0.75 + (diffGamma / 20) * 0.45;
-  }
-  holo.style.backgroundColor = `rgba(0, 0, 0, ${holoOpacity.toFixed(2)})`;
-
-  const diffBeta = applyDeadZone(updateAxis(tiltState.beta, x, 30));
-  const prog = Math.abs(diffBeta) / 30;
-  if (diffBeta >= 0) {
-    norge.style.opacity = (0.80 - 0.45 * prog).toFixed(2);
-    noreg.style.opacity = (0.35 + 0.45 * prog).toFixed(2);
-  } else {
-    norge.style.opacity = (0.35 + 0.45 * prog).toFixed(2);
-    noreg.style.opacity = (0.80 - 0.45 * prog).toFixed(2);
-  }
-}
+const handleOrientationControl = createOrientationHandler(holoControl, {
+  norge: ctrlNorge,
+  noreg: ctrlNoreg
+});
 
   // Update the "Sist oppdatert" timestamp on the license screen
   function updateTimestamp(id = 'updated-time') {
@@ -296,22 +276,15 @@ function handleOrientationControl(e) {
 
   function updateDailyNumber() {
     if (!dailyNumberEl) return;
-    const n = Math.floor(Math.random() * (998 - 101 + 1)) + 101;
+    const n = Math.floor(Math.random() * 898) + 101; // range 101-998
     dailyNumberEl.textContent = n;
   }
   
   // 9) Reset transforms when screens switch
   function resetTransforms() {
-    const m = document.getElementById('holo-main');
-    m.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-    const l = document.getElementById('holo-license');
-    if (l) {
-      l.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-    }
-    const c = document.getElementById('holo-control');
-    if (c) {
-      c.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-    }
+    if (holoMain) holoMain.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+    if (holoLicense) holoLicense.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+    if (holoControl) holoControl.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
     resetTiltState();
   }
   const observer = new MutationObserver(mutations => {
