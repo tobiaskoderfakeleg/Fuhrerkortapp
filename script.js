@@ -32,8 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const dailyNumberEl = document.getElementById('daily-number');
 
   const tiltState = {
-    gamma: { last: null, offset: 0 },
-    beta:  { last: null, offset: 0 }
+    gamma: { last: null, base: null },
+    beta:  { last: null, base: null }
   };
 
   // Cache frequently used elements
@@ -49,15 +49,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function resetTiltState() {
     tiltState.gamma.last = null;
-    tiltState.gamma.offset = 0;
+    tiltState.gamma.base = null;
     tiltState.beta.last = null;
-    tiltState.beta.offset = 0;
+    tiltState.beta.base = null;
   }
 
   function updateAxis(state, value, max) {
-    if (state.last === null) {
+    if (state.base === null) {
+      state.base = value;
       state.last = value;
-      state.offset = 0;
       return 0;
     }
 
@@ -70,11 +70,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     state.offset += delta;
 
-    if (Math.abs(state.offset) < 1) state.offset = 0;
-    if (state.offset > max) state.offset = max;
-    if (state.offset < -max) state.offset = -max;
+    let diff = value - state.base;
+    if (diff > 180) diff -= 360;
+    if (diff < -180) diff += 360;
 
-    return state.offset;
+    if (Math.abs(diff) < 1) {
+      state.base = value;
+      diff = 0;
+    }
+
+    if (diff > max) diff = max;
+    if (diff < -max) diff = -max;
+
+    return diff;
   }
 
   function applyDeadZone(value, threshold = 1.5) {
