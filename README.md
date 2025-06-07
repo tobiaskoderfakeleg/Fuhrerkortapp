@@ -24,7 +24,8 @@ Image assets are not included in the repository. Place the required files in the
 
 ```
 Elements/
-  License/       # contains "Ditt Førerkort.png"
+  License/       # contains "Ditt Førerkort.png", "A1.png", "AM.png", "B.png",
+                 # "Koder.png", "Kontroll.png", "RotSq.png" and "pil.png"
   Main/          # contains "statens logo.png" and "RotSq.png"
   Profile/       # contains "profil logo.png"
   ScanQR/        # contains "Skann QR-kode.png"
