@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const gProg = clamp((gDiff + 15) / 45, 0, 1);
       if (square) {
         const opacity = 0.3 + gProg * 0.4; // 30% → 70%
-        square.style.backgroundColor = `rgba(0,0,0,${opacity.toFixed(2)})`;
+        square.style.opacity = opacity.toFixed(2);
       }
 
       // ----- Type 2: two line text fade (beta axis) -----
@@ -296,9 +296,9 @@ const handleOrientationControl = createOrientationHandler({
   // 9) Reset transforms when screens switch
   function resetTransforms() {
     // All hologram squares start at 30% opacity
-    if (holoMain) holoMain.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
-    if (holoLicense) holoLicense.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
-    if (holoControl) holoControl.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
+    if (holoMain) holoMain.style.opacity = '0.3';
+    if (holoLicense) holoLicense.style.opacity = '0.3';
+    if (holoControl) holoControl.style.opacity = '0.3';
 
     // Text holograms default with Noreg visible and Norge faded
     if (lineNorge && lineNoreg) {
