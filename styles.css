@@ -1,3 +1,12 @@
+/*-------------------------------------------------------------------
+  Basic layout styles
+  -----------------------------------------------------------------
+  All colours, sizing and placement are defined in this file. Editing
+  the values below lets you change the entire visual appearance of the
+  app without touching the JavaScript. Each section is grouped by the
+  screen it affects so look for the matching comment when customising.
+-------------------------------------------------------------------*/
+
 /* Root: no padding on html/body */
 html, body {
   margin: 0;
@@ -230,7 +239,10 @@ html, body {
   to { transform: rotate(360deg); }
 }
 
-/* Hovedskjerm */
+/*-------------------------------------------------------------
+  Styles for the main screen. Change colours or spacing here if
+  you want a different look when the user has logged in.
+-------------------------------------------------------------*/
 #main-screen {
   background-color: #f5f5f5;
 }
@@ -299,7 +311,10 @@ html, body {
   background-color: #e0e0e0;
 }
 
-/* "Ditt førerkort"-skjerm */
+/*-------------------------------------------------------------
+  Styles for the licence screen. Adjust fonts and images here to
+  match your own driver's licence layout.
+-------------------------------------------------------------*/
 #license-screen {
   background-color: #f5f5f5;
 }
@@ -409,7 +424,10 @@ html, body {
   z-index: 2;
 }
 
-/* Bunnlinje på "Ditt førerkort" */
+/*-------------------------------------------------------------
+  Footer bar shown on the licence and QR screens. Adjust the
+  background colour or height here to style the footer area.
+-------------------------------------------------------------*/
 #license-screen .license-bottom-bar {
   position: absolute;
   left: 0;
@@ -423,6 +441,16 @@ html, body {
 }
 
 #license-screen .license-footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 40px;
+  background: #e0e0e0;
+}
+
+/* Same footer style applied to the QR screen so the bottom area matches */
+#screen2 .license-footer {
   position: absolute;
   left: 0;
   right: 0;
@@ -481,7 +509,14 @@ html, body {
   line-height: 1;
 }
 
-/* Skjerm 4: Kontrollside */
+/*-------------------------------------------------------------
+  Styles for the QR/Control screen. Tweak these settings to change
+  how the police verification page looks.
+-------------------------------------------------------------*/
+#screen2 {
+  /* Extend to full height so no white bar shows below the QR code */
+  height: 100vh;
+}
 #screen2 .top-bar {
   position: relative;
   text-align: center;
