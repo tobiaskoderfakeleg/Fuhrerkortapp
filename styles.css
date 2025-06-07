@@ -281,6 +281,11 @@ html, body {
   color: #333;
   cursor: pointer;
 }
+#main-screen .button-bar button img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
 #main-screen #btn-top {
   background-color: #ff9500;
 }
@@ -440,6 +445,10 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+#license-screen .code-box img {
+  width: 24px;
+  height: 24px;
 }
 
 #license-screen .code-number {
