@@ -121,8 +121,8 @@ html, body {
   margin-bottom: 20px;
 }
 .holo-object {
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
   background: url('Elements/Main/RotSq.png') no-repeat center / cover;
   border-radius: 50%;
   position: absolute;
@@ -212,7 +212,7 @@ html, body {
 #holo-text-control {
   position: absolute;
   right: 30px;
-  bottom: 30px;
+  bottom: 10px;
   transform: none;
   text-align: center;
   font-size: 2rem;
@@ -233,6 +233,10 @@ html, body {
 /* Hovedskjerm */
 #main-screen {
   background-color: #f5f5f5;
+}
+
+#main-screen #holo-text {
+  top: calc(50% + 60px);
 }
 #main-screen .container {
   height: 100%;
@@ -376,6 +380,7 @@ html, body {
 }
 #license-screen .license-cards {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
   margin-top: 24px;
   z-index: 2;
@@ -384,24 +389,18 @@ html, body {
   background: #fff;
   border: 1px solid #ccc;
   border-radius: 4px;
-  padding: 12px;
-  width: 100px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  padding: 0;
+  width: calc(50% - 5px);
+  height: 80px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  overflow: hidden;
   z-index: 2;
 }
-#license-screen .card h3 {
-  margin: 0;
-  font-size: 1rem;
-  color: #333;
-}
 #license-screen .card img {
-  margin-top: 8px;
-  width: 24px;
-  height: 24px;
-  opacity: 0.7;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 #license-screen .updated-time {
   margin-top: 24px;
@@ -421,6 +420,15 @@ html, body {
   justify-content: space-between;
   align-items: flex-end;
   z-index: 2;
+}
+
+#license-screen .license-footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 40px;
+  background: #e0e0e0;
 }
 
 #license-screen .control-btn {
@@ -455,6 +463,7 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 96px;
 }
 #license-screen .code-box img {
   width: 24px;
@@ -500,16 +509,16 @@ html, body {
   margin: 10px 0;
 }
 #screen2 #qr-image {
-  width: 60%;
-  max-width: 200px;
+  width: 78%;
+  max-width: 260px;
   margin: 20px 0;
 }
+#screen2 .updated-time,
 #screen2 .info-boxes {
-  width: 80%;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 20px;
+  display: none;
+}
+#screen2 .info-boxes {
+  display: none;
 }
 #screen2 .info-row {
   display: flex;
