@@ -17,3 +17,17 @@ A small prototype of a digital Norwegian driver's licence built as a progressive
    npx serve .
    ```
 3. Open your browser at `http://localhost:8000` to use the app. You can then add it to your home screen to run it in standalone mode.
+
+## Adding your own images
+
+Image assets are not included in the repository. Place the required files in the `Elements` directory before running the app:
+
+```
+Elements/
+  License/       # contains "Ditt Førerkort.png"
+  Main/          # contains "statens logo.png" and "RotSq.png"
+  Profile/       # contains "profil logo.png"
+  ScanQR/        # contains "Skann QR-kode.png"
+```
+
+These images will be loaded automatically by the HTML and CSS once added.
