@@ -22,14 +22,16 @@
 
   <title>Førerkort</title>
 
-  <!-- Your existing CSS link: -->
+  <!-- All colors, fonts and positioning are controlled from styles.css.
+       Edit that file to change the look of the entire app. -->
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <div id="offline-banner" class="offline-banner">Du er offline</div>
 
-<!-- Corrected PIN‐view structure -->
+<!-- PIN view shown when the app first loads.
+     Change texts or colours here if you want a different login screen. -->
 <div id="pin-view" class="view active">
   <div class="safe-area">
     <div class="container">
@@ -45,7 +47,9 @@
   </div>
 </div>
 
-  <!-- Skjerm 2: Hovedskjerm -->
+  <!-- Skjerm 2: Hovedskjerm
+       This is the main landing page. Change the button images or background
+       colours here to give the app a different style. -->
   <div id="main-screen" class="view">
     <div class="safe-area">
       <button class="profile-btn" id="profile-btn-main"><img src="Elements/Main/profil logo.png" alt="Profil"></button>
@@ -70,7 +74,9 @@
     </div>
   </div>
 
-  <!-- Skjerm 3: Ditt førerkort -->
+  <!-- Skjerm 3: Ditt førerkort
+       Here we show the digital licence. Update the profile picture or
+       change card images to customize the look. -->
   <div id="license-screen" class="view">
      <div class="safe-area">
         <button class="back-btn" id="back-from-license">◀ Tilbake</button>
@@ -115,6 +121,9 @@
   </div>
 
   <!-- Skjerm 4: Kontrollside -->
+  <!-- Screen showing the QR code used by police. This screen has its own
+       footer so we keep all content inside a safe-area wrapper and then
+       place the footer after it. -->
   <div id="screen2" class="view">
     <div class="safe-area">
       <div class="top-bar">
@@ -140,9 +149,14 @@
         </div>
       </div>
     </div>
+    <!-- Footer copied from the license screen so the bottom area matches.
+         It simply draws a grey bar so no content appears cropped. -->
+    <div class="license-footer"></div>
   </div>
 
-  <!-- Skjerm 5: Placeholder etter neste -->
+  <!-- Skjerm 5: Placeholder
+       This page is empty for now. You can use it as a template when adding
+       new screens to the app. -->
   <div id="screen3" class="view">
     <div class="safe-area">
     <button class="back-btn" id="back-from-screen3">◀ Tilbake</button>
